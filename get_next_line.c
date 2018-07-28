@@ -6,7 +6,7 @@
 /*   By: gsteyn <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/08 07:50:03 by gsteyn            #+#    #+#             */
-/*   Updated: 2018/06/12 09:29:10 by gsteyn           ###   ########.fr       */
+/*   Updated: 2018/07/28 11:36:53 by gsteyn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ static int		ft_read_buffer(char **line, t_file *file)
 
 static t_file	*ft_get_file(t_list *list, const int fd)
 {
+	t_file			*new;
+
 	if (!list->content)
 	{
 		list->content = ft_new_file(fd);
@@ -65,12 +67,12 @@ static t_file	*ft_get_file(t_list *list, const int fd)
 		if (((t_file*)list->content)->fd == fd)
 			return ((t_file*)list->content);
 		else if (list->next)
-		{
 			list = list->next;
-		}
 		else
 		{
-			list->next = ft_lstnew(ft_new_file(fd), sizeof(t_file));
+			new = ft_new_file(fd);
+			list->next = ft_lstnew(new, sizeof(t_file));
+			ft_memdel((void**)(&new));
 			return ((t_file*)(list->next->content));
 		}
 	}
